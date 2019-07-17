@@ -1,5 +1,5 @@
-const app = require('./src/app');
+const start = require('./src/app');
 
-const port = process.env.PORT || 4000;
-
-app.listen({ port }, () => console.log(`server is starting at port ${port}`));
+start()
+  .then(() => console.log('started'))
+  .catch(err => console.log(err));
