@@ -1,3 +1,4 @@
 module.exports = {
-  roles: require('./roles')
+  roles: require('./roles'),
+  mimeTypes: require('./mimeTypes')
 };
