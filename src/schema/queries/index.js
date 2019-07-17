@@ -6,4 +6,4 @@ const mainQuery = gql`
   }
 `;
 
-module.exports = [mainQuery];
+module.exports = [mainQuery, require('./admin.query')];

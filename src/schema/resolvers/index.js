@@ -4,4 +4,8 @@ const mainResolver = {
   }
 };
 
-module.exports = [mainResolver];
+module.exports = [
+  mainResolver,
+  ...require('./queries'),
+  ...require('./mutations')
+];
