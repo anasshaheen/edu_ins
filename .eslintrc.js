@@ -56,7 +56,7 @@ module.exports = {
         typeof: true
       }
     ],
-    'no-unused-vars': 2,
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'no-console': 0,
     'no-case-declarations': 0,
     'no-fallthrough': 0,

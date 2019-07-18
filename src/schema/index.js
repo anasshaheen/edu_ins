@@ -1,8 +1,12 @@
 module.exports = {
   typeDefs: [
+    ...require('./inputs'),
+    ...require('./outputs'),
     ...require('./queries'),
     ...require('./types'),
-    ...require('./mutations')
+    ...require('./mutations'),
+    require('./directives').schema
   ],
-  resolvers: require('./resolvers')
+  resolvers: require('./resolvers'),
+  schemaDirectives: require('./directives').schemaDirectives
 };
