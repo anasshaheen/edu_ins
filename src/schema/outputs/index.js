@@ -1,1 +1,5 @@
-module.exports = [require('./login.output')];
+module.exports = [
+  require('./login.output'),
+  require('./file.output'),
+  require('./response.output')
+];

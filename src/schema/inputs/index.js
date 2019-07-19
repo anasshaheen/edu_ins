@@ -1,1 +1,1 @@
-module.exports = [require('./login.input')];
+module.exports = [require('./login.input'), require('./user.input')];
