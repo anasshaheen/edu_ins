@@ -3,5 +3,7 @@ module.exports = {
   compare: require('./compare'),
   generateToken: require('./generateToken'),
   verifyToken: require('./verifyToken'),
-  decodeToken: require('./decodeToken')
+  decodeToken: require('./decodeToken'),
+  responses: require('./responses'),
+  uploadFile: require('./uploadFile')
 };

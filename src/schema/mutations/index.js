@@ -6,4 +6,9 @@ const mainQuery = gql`
   }
 `;
 
-module.exports = [mainQuery, require('./auth.mutation')];
+module.exports = [
+  mainQuery,
+  require('./auth.mutation'),
+  require('./admin.mutation'),
+  require('./user.mutation')
+];
