@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 
-const { initDb, seedDb } = require('./services');
+const { initDb, initAWSService, seedDb } = require('./services');
 const { typeDefs, resolvers, schemaDirectives } = require('./schema');
 const { verifyToken, decodeToken } = require('./utils');
 const { User } = require('./db');
@@ -11,6 +11,7 @@ const { User } = require('./db');
 module.exports = async () => {
   try {
     initDb();
+    initAWSService();
     await seedDb();
 
     const server = new ApolloServer({

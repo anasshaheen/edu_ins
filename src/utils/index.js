@@ -4,5 +4,6 @@ module.exports = {
   generateToken: require('./generateToken'),
   verifyToken: require('./verifyToken'),
   decodeToken: require('./decodeToken'),
-  responses: require('./responses')
+  responses: require('./responses'),
+  uploadFile: require('./uploadFile')
 };

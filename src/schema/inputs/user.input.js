@@ -18,8 +18,4 @@ module.exports = gql`
     oldPassword: String!
     newPassword: String!
   }
-
-  input ForgotPasswordInput {
-    email: String!
-  }
 `;

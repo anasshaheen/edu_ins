@@ -38,7 +38,7 @@ module.exports = {
           throw new Error('User not found!');
         }
 
-        await User.deleteOne({ _id: id });
+        await User.findByIdAndDelete(id);
 
         return responses.removeResponse('Admin');
       } catch (err) {
