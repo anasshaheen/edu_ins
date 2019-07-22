@@ -13,6 +13,7 @@ module.exports = {
       }
     ) => {
       try {
+        input.updatedAt = new Date();
         await User.findByIdAndUpdate(_id, input);
 
         return responses.updateResponse('User');
@@ -41,7 +42,8 @@ module.exports = {
 
       await user
         .update({
-          password: await hash(newPassword)
+          password: await hash(newPassword),
+          updatedAt: new Date()
         })
         .exec();
 
@@ -54,7 +56,8 @@ module.exports = {
 
         const data = await uploadFile(`${_id}${mimetype}`, stream);
         await User.findByIdAndUpdate(_id, {
-          avatar: data.Location
+          avatar: data.Location,
+          updatedAt: new Date()
         });
 
         return responses.updateResponse('Avatar');

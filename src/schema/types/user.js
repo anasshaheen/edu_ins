@@ -8,5 +8,7 @@ module.exports = gql`
     email: String
     name: String
     role: String
+    createdAt: String
+    updatedAt: String
   }
 `;
