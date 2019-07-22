@@ -7,5 +7,6 @@ module.exports = gql`
     description: String
     url: String
     user: User
+    createdAt: String
   }
 `;

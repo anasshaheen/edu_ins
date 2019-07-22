@@ -7,7 +7,8 @@ const GeneralResource = mongoose.Schema({
   title: String,
   description: String,
   url: String,
-  user: { type: ObjectId, ref: User }
+  user: { type: ObjectId, ref: User },
+  createdAt: Date
 });
 
 module.exports = mongoose.model('generalResources', GeneralResource);
