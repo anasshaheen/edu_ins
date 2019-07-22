@@ -3,5 +3,9 @@ module.exports = [
   require('./admin.mutation'),
   require('./user.mutation'),
   require('./teacher.mutation'),
-  require('./student.mutation')
+  require('./student.mutation'),
+  require('./course.mutation'),
+  require('./courseExam.mutation'),
+  require('./courseResource.mutation'),
+  require('./courseSyllable.mutation')
 ];

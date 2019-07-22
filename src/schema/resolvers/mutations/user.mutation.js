@@ -73,7 +73,7 @@ module.exports = {
           throw new Error('User not found!');
         }
 
-        await User.findByIdAndDelete(id);
+        await user.remove();
 
         return responses.removeResponse('User');
       } catch (err) {

@@ -9,5 +9,7 @@ module.exports = gql`
     teachers: [User]
     exams: [Exam]
     resources: [Resource]
+    createdAt: String
+    updatedAt: String
   }
 `;
