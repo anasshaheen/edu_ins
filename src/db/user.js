@@ -21,7 +21,9 @@ const User = mongoose.Schema({
     maxLength: 12
   },
   password: String,
-  role: String
+  role: String,
+  createdAt: Date,
+  updatedAt: Date
 });
 
 module.exports = mongoose.model('users', User);

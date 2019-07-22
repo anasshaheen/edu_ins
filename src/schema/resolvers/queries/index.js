@@ -1,1 +1,1 @@
-module.exports = [require('./admin.query')];
+module.exports = [require('./admin.query'), require('./teacher.query')];

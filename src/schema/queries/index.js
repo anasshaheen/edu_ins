@@ -6,4 +6,8 @@ const mainQuery = gql`
   }
 `;
 
-module.exports = [mainQuery, require('./admin.query')];
+module.exports = [
+  mainQuery,
+  require('./admin.query'),
+  require('./teacher.query')
+];

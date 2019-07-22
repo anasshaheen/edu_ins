@@ -4,7 +4,7 @@ const { responses, hash } = require('../../../utils');
 
 module.exports = {
   Mutation: {
-    addAdmin: async (_, { input: { phone, email, name, password } }) => {
+    addTeacher: async (_, { input: { phone, email, name, password } }) => {
       try {
         let user = await User.findOne({
           $or: [{ phone }, { email }]
@@ -18,12 +18,12 @@ module.exports = {
           email,
           phone,
           passowrd: await hash(password),
-          role: roles.ADMIN,
+          role: roles.TEACHER,
           createdAt: new Date()
         });
         await user.save();
 
-        const response = responses.addResponse('Admin');
+        const response = responses.addResponse('Teacher');
         response.id = user._id;
 
         return response;
@@ -32,7 +32,7 @@ module.exports = {
         throw err;
       }
     },
-    removeAdmin: async (_, { id }) => {
+    removeTeacher: async (_, { id }) => {
       try {
         const user = await User.findById(id);
         if (!user) {
@@ -41,7 +41,7 @@ module.exports = {
 
         await User.findByIdAndDelete(id);
 
-        return responses.removeResponse('Admin');
+        return responses.removeResponse('Teacher');
       } catch (err) {
         console.log(err);
         throw err;
