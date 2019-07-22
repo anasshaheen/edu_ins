@@ -65,6 +65,21 @@ module.exports = {
         console.log(err);
         throw err;
       }
+    },
+    removeUser: async (_, { id }) => {
+      try {
+        const user = await User.findById(id);
+        if (!user) {
+          throw new Error('User not found!');
+        }
+
+        await User.findByIdAndDelete(id);
+
+        return responses.removeResponse('User');
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
     }
   }
 };

@@ -9,5 +9,6 @@ const mainQuery = gql`
 module.exports = [
   mainQuery,
   require('./admin.query'),
-  require('./teacher.query')
+  require('./teacher.query'),
+  require('./student.query')
 ];
