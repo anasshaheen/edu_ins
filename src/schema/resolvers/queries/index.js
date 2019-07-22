@@ -1,1 +1,5 @@
-module.exports = [require('./admin.query'), require('./teacher.query')];
+module.exports = [
+  require('./admin.query'),
+  require('./teacher.query'),
+  require('./student.query')
+];

@@ -4,7 +4,7 @@ const { responses, hash } = require('../../../utils');
 
 module.exports = {
   Mutation: {
-    addAdmin: async (_, { input: { phone, email, name, password } }) => {
+    addStudent: async (_, { input: { phone, email, name, password } }) => {
       try {
         let user = await User.findOne({
           $or: [{ phone }, { email }]
@@ -18,12 +18,12 @@ module.exports = {
           email,
           phone,
           passowrd: await hash(password),
-          role: roles.ADMIN,
+          role: roles.STUDENT,
           createdAt: new Date()
         });
         await user.save();
 
-        const response = responses.addResponse('Admin');
+        const response = responses.addResponse('Student');
         response.id = user._id;
 
         return response;

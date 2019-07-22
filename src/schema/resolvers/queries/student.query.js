@@ -4,7 +4,7 @@ const { roles } = require('../../../constants');
 
 module.exports = {
   Query: {
-    teachers: async (_, { paging: { page = 1, limit = 10 } }) => {
+    students: async (_, { paging: { page = 1, limit = 10 } }) => {
       return await User.find()
         .sort({
           createdAt: 'desc'
@@ -12,8 +12,9 @@ module.exports = {
         .skip(limit * (page - 1))
         .limit(limit)
         .where({
-          role: roles.TEACHER
-        });
+          role: roles.STUDENT
+        })
+        .select();
     }
   }
 };
