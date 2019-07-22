@@ -15,7 +15,8 @@ const Course = mongoose.Schema({
   syllable: Syllable,
   teachers: [{ type: ObjectId, ref: User }],
   exams: [Exam],
-  resources: [Resource]
+  resources: [Resource],
+  createdAt: Date
 });
 
 module.exports = mongoose.model('courses', Course);

@@ -8,7 +8,8 @@ const ExamMark = require('./examMark');
 const CourseStudent = mongoose.Schema({
   course: { type: ObjectId, ref: Course },
   student: { type: ObjectId, ref: User },
-  marks: [{ type: ObjectId, ref: ExamMark }]
+  marks: [{ type: ObjectId, ref: ExamMark }],
+  enrollementDate: Date
 });
 
 CourseStudent.index(
