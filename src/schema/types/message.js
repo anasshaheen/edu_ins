@@ -4,8 +4,8 @@ module.exports = gql`
   type Message {
     id: String!
     body: String
-    mimeType: MimeType
     user: User
     course: Course
+    createdAt: String
   }
 `;

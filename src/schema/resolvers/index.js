@@ -7,5 +7,6 @@ const mainResolver = {
 module.exports = [
   mainResolver,
   ...require('./queries'),
-  ...require('./mutations')
+  ...require('./mutations'),
+  ...require('./subscriptions')
 ];

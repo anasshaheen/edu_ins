@@ -5,6 +5,7 @@ module.exports = {
     ...require('./queries'),
     ...require('./types'),
     ...require('./mutations'),
+    ...require('./subscriptions'),
     require('./directives').schema
   ],
   resolvers: require('./resolvers'),

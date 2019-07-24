@@ -5,7 +5,6 @@ module.exports = [
   require('./examMark'),
   require('./generalResource'),
   require('./message'),
-  require('./mimeType'),
   require('./resource'),
   require('./syllable'),
   require('./syllableSection'),
