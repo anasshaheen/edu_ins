@@ -1,4 +1,5 @@
 const { withFilter } = require('apollo-server-express');
+const { CourseStudent } = require('../../../db');
 
 const {
   subscriptionEvents: { MESSAGE_ADDED }
@@ -13,8 +14,16 @@ module.exports = {
       },
       subscribe: withFilter(
         () => pubSub.itrator(MESSAGE_ADDED),
-        (payload, { courseId }) => {
-          return payload.course.toString() === courseId;
+        async (payload, { courseId }) => {
+          const courseStudent = await CourseStudent.findOne({
+            course: courseId,
+            student: payload.user._id
+          });
+
+          return (
+            payload.course.toString() === courseId &&
+            courseStudent !== undefined
+          );
         }
       )
     }
