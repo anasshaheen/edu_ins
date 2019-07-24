@@ -8,13 +8,20 @@ module.exports = {
         paging: { page = 1, limit = 10 }
       }
     ) {
-      return await Course.find()
+      const data = await Course.find()
         .sort({
           createdAt: 'desc'
         })
         .skip(limit * (page - 1))
         .limit(limit)
         .exec();
+
+      return {
+        data,
+        page,
+        limit,
+        totalRecords: await Course.countDocuments().exec()
+      };
     },
     async course(_, { id }) {
       return await Course.populate('teachers').findById(id);
@@ -40,7 +47,14 @@ module.exports = {
         .populate('student')
         .exec();
 
-      return data.map(courseStudent => courseStudent.student);
+      return {
+        data: data.map(courseStudent => courseStudent.student),
+        page,
+        limit,
+        totalRecords: await CourseStudent.countDocuments({
+          course: courseId
+        }).exec()
+      };
     }
   }
 };

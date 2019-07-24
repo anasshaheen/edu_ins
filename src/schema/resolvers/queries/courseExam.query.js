@@ -9,7 +9,7 @@ module.exports = {
         courseId
       }
     ) {
-      return await Exam.find({
+      const data = await Exam.find({
         course: courseId
       })
         .sort({
@@ -19,6 +19,15 @@ module.exports = {
         .limit(limit)
         .populate('author')
         .exec();
+
+      return {
+        data,
+        page,
+        limit,
+        totalRecords: await Exam.countDocuments({
+          course: courseId
+        }).exec()
+      };
     },
     async courseExam(_, { id }) {
       return await Exam.findById(id).populate('author');

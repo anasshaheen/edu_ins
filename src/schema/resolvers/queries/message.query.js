@@ -20,7 +20,7 @@ module.exports = {
         throw new Error('User is not authorzied to access this resource!');
       }
 
-      return await Message.find({
+      const data = await Message.find({
         course: courseId
       })
         .sort({
@@ -29,6 +29,15 @@ module.exports = {
         .skip(limit * (page - 1))
         .limit(limit)
         .select();
+
+      return {
+        data,
+        page,
+        limit,
+        totalRecords: await Message.countDocuments({
+          course: courseId
+        }).exec()
+      };
     }
   }
 };

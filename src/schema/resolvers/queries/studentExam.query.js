@@ -9,7 +9,7 @@ module.exports = {
         examId
       }
     ) {
-      return await ExamMark.find()
+      const data = await ExamMark.find()
         .sort({
           createdAt: 'desc'
         })
@@ -21,6 +21,15 @@ module.exports = {
         .populate('exam')
         .populate('student')
         .select();
+
+      return {
+        data,
+        page,
+        limit,
+        totalRecords: await ExamMark.countDocuments({
+          exam: examId
+        }).exec()
+      };
     },
     async studentExamMarks(
       _,
@@ -29,7 +38,7 @@ module.exports = {
         studentId
       }
     ) {
-      return await ExamMark.find()
+      const data = await ExamMark.find()
         .sort({
           createdAt: 'desc'
         })
@@ -40,6 +49,15 @@ module.exports = {
         })
         .populate('exam')
         .select();
+
+      return {
+        data,
+        page,
+        limit,
+        totalRecords: await ExamMark.countDocuments({
+          student: studentId
+        }).exec()
+      };
     },
     async examMark(_, { studentId, examId }) {
       return await ExamMark.findOne({

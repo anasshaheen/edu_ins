@@ -8,7 +8,7 @@ module.exports = {
         paging: { page = 1, limit = 10 }
       }
     ) {
-      return await GeneralResource.find()
+      const data = await GeneralResource.find()
         .sort({
           createdAt: 'desc'
         })
@@ -16,6 +16,13 @@ module.exports = {
         .limit(limit)
         .populate('user')
         .exec();
+
+      return {
+        data,
+        page,
+        limit,
+        totalRecords: GeneralResource.countDocuments().exec()
+      };
     },
     async generalResource(_, { id }) {
       return await GeneralResource.findById(id).populate('user');

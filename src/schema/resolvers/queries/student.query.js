@@ -10,7 +10,7 @@ module.exports = {
         paging: { page = 1, limit = 10 }
       }
     ) {
-      return await User.find()
+      const data = await User.find()
         .sort({
           createdAt: 'desc'
         })
@@ -20,6 +20,15 @@ module.exports = {
           role: roles.STUDENT
         })
         .select();
+
+      return {
+        data,
+        page,
+        limit,
+        totalRecords: await User.countDocuments({
+          role: roles.STUDENT
+        }).exec()
+      };
     },
     async searchForStudent(
       _,
@@ -28,7 +37,7 @@ module.exports = {
         query
       }
     ) {
-      return await User.find()
+      const data = await User.find()
         .sort({
           createdAt: 'desc'
         })
@@ -42,6 +51,19 @@ module.exports = {
           $and: [{ role: roles.STUDENT }]
         })
         .select();
+
+      return {
+        data,
+        page,
+        limit,
+        totalRecords: await User.countDocuments({
+          $or: [
+            { phone: new RegExp(query, 'i') },
+            { name: new RegExp(query, 'i') }
+          ],
+          $and: [{ role: roles.STUDENT }]
+        }).exec()
+      };
     }
   }
 };
