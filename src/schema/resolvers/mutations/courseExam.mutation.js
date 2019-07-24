@@ -1,17 +1,26 @@
-const { Course } = require('../../../db');
+const { Course, Exam } = require('../../../db');
 const { responses } = require('../../../utils');
 
 module.exports = {
   Mutation: {
-    async addExam(_, { courseId, exam }) {
+    async addExam(
+      _,
+      { courseId, input },
+      {
+        user: { _id }
+      }
+    ) {
       try {
         const course = await Course.findById(courseId);
         if (!course) {
           throw new Error('Course not found!');
         }
 
-        course.exams.push(exam);
-        await course.save();
+        input.course = courseId;
+        input.createdAt = new Date();
+        input.author = _id;
+        const exam = new Exam(input);
+        await exam.save();
 
         return responses.addResponse('Exam');
       } catch (err) {
@@ -19,25 +28,17 @@ module.exports = {
         throw err;
       }
     },
-    async updateExam(_, { courseId, examId, exam }) {
+    async updateExam(_, { examId, input }) {
       try {
-        const course = await Course.findById(courseId);
-        if (!course) {
-          throw new Error('Course not found!');
+        const exam = await Exam.findById(examId);
+        if (!exam) {
+          throw new Error('Exam not found!');
         }
 
-        await Course.updateOne(
-          {
-            'exams._id': examId
-          },
-          {
-            $set: {
-              'exams.$.name': exam.name,
-              'exams.$.description': exam.description,
-              'exams.$.grade': exam.grade
-            }
-          }
-        );
+        exam.name = input.name;
+        exam.description = input.description;
+        exam.grade = input.grade;
+        await exam.save();
 
         return responses.updateResponse('Exam');
       } catch (err) {
@@ -45,25 +46,14 @@ module.exports = {
         throw err;
       }
     },
-    async removeExam(_, { courseId, examId }) {
+    async removeExam(_, { examId }) {
       try {
-        const course = await Course.findById(courseId);
-        if (!course) {
+        const exam = await Exam.findById(examId);
+        if (!exam) {
           throw new Error('Course not found!');
         }
 
-        await Course.updateOne(
-          {
-            _id: courseId
-          },
-          {
-            $pull: {
-              exams: {
-                _id: examId
-              }
-            }
-          }
-        );
+        await exam.remove();
 
         return responses.removeResponse('Exam');
       } catch (err) {

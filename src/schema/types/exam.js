@@ -6,5 +6,7 @@ module.exports = gql`
     name: String
     description: String
     grade: Float
+    author: User
+    createdAt: String
   }
 `;

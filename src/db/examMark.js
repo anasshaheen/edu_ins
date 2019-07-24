@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
 
 const User = require('./user');
+const Exam = require('./exam');
 
 const ExamMark = mongoose.Schema({
-  exam: { type: ObjectId, index: true },
+  exam: { type: ObjectId, ref: Exam, index: true },
   student: { type: ObjectId, ref: User },
   grade: Number
 });
