@@ -5,7 +5,7 @@ const { roles } = require('../../../constants');
 module.exports = {
   Query: {
     teachers: async (_, { paging: { page = 1, limit = 10 } }) => {
-      return await User.find()
+      const data = await User.find()
         .sort({
           createdAt: 'desc'
         })
@@ -14,6 +14,15 @@ module.exports = {
         .where({
           role: roles.TEACHER
         });
+
+      return {
+        data,
+        page,
+        limit,
+        totalRecords: await User.countDocuments({
+          role: roles.TEACHER
+        }).exec()
+      };
     }
   }
 };

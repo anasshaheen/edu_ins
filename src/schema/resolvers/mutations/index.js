@@ -1,4 +1,11 @@
+const main = {
+  PaginatedResult: {
+    __resolveType: () => 'PaginatedResult'
+  }
+};
+
 module.exports = [
+  main,
   require('./auth.mutation'),
   require('./admin.mutation'),
   require('./user.mutation'),
