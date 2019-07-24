@@ -1,4 +1,4 @@
 module.exports = {
   roles: require('./roles'),
-  mimeTypes: require('./mimeTypes')
+  subscriptionEvents: require('./subscriptionEvents')
 };

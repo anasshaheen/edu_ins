@@ -1,8 +1,7 @@
 const { gql } = require('apollo-server-express');
 
 module.exports = gql`
-  enum MimeType {
-    FILE
-    TEXT
+  extend type Subscription {
+    messageAdded(courseId: String!): Message
   }
 `;

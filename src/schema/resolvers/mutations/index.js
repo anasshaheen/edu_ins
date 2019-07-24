@@ -8,5 +8,6 @@ module.exports = [
   require('./courseExam.mutation'),
   require('./courseResource.mutation'),
   require('./courseSyllable.mutation'),
-  require('./generalResource.mutation')
+  require('./generalResource.mutation'),
+  require('./message.mutation')
 ];
