@@ -1,6 +1,10 @@
 require('dotenv').config();
 
 const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
+const morgan = require('morgan');
+
 const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
 const { createServer } = require('http');
 const { subscribe, execute } = require('graphql');
@@ -52,6 +56,9 @@ module.exports = async () => {
 
     const port = process.env.PORT || 4000;
     const app = express();
+    app.use(cors());
+    app.use(helmet());
+    app.use(morgan('combined'));
 
     server.applyMiddleware({ app, path: '/graphql' });
 
