@@ -4,5 +4,7 @@ module.exports = [
   require('./student.query'),
   require('./course.query'),
   require('./generalResource.query'),
-  require('./message.query')
+  require('./message.query'),
+  require('./courseExam.query'),
+  require('./studentExam.query')
 ];

@@ -3,5 +3,6 @@ module.exports = [
   require('./user.input'),
   require('./pagination.input'),
   require('./course.input'),
-  require('./message.input')
+  require('./message.input'),
+  require('./studentExam.input')
 ];

@@ -58,7 +58,7 @@ module.exports = async () => {
     const app = express();
     app.use(cors());
     app.use(helmet());
-    app.use(morgan('combined'));
+    // app.use(morgan('combined'));
 
     server.applyMiddleware({ app, path: '/graphql' });
 

@@ -1,6 +1,7 @@
 module.exports = {
   Course: require('./course'),
   Exam: require('./exam'),
+  ExamMark: require('./examMark'),
   Message: require('./message'),
   Resource: require('./resource'),
   Syllable: require('./syllable'),
