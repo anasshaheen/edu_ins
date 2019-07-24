@@ -7,7 +7,8 @@ const Exam = require('./exam');
 const ExamMark = mongoose.Schema({
   exam: { type: ObjectId, ref: Exam, index: true },
   student: { type: ObjectId, ref: User },
-  grade: Number
+  grade: Number,
+  createdAt: Date
 });
 
 ExamMark.index(
