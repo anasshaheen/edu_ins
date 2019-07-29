@@ -6,13 +6,23 @@
   "author": "Anas Shaheen",
   "repository": "https://github.com/anasshaheen/edu_ins",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "build": "rimraf build && tsc -p tsconfig.build.json",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "start": "ts-node -r tsconfig-paths/register ./main.ts",
+    "start:dev": "tsc-watch -p tsconfig.build.json --onSuccess \"node build/main.js\"",
+    "start:debug": "tsc-watch -p tsconfig.build.json --onSuccess \"node --inspect-brk build/main.js\"",
+    "start:prod": "yarn build && node build/main.js",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
   "dependencies": {
     "apollo-server-express": "^2.6.9",
     "aws-sdk": "^2.496.0",
     "bcrypt": "^3.0.6",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
@@ -26,11 +36,24 @@
     "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.2",
-    "eslint": "^6.0.1",
-    "eslint-config-prettier": "^6.0.0",
-    "eslint-plugin-import": "^2.18.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "prettier": "^1.18.2"
+    "@types/aws-sdk": "^2.7.0",
+    "@types/bcrypt": "^3.0.0",
+    "@types/compression": "^0.0.36",
+    "@types/dotenv": "^6.1.1",
+    "@types/graphql": "^14.2.3",
+    "@types/helmet": "^0.0.43",
+    "@types/jest": "^24.0.15",
+    "@types/jsonwebtoken": "^8.3.2",
+    "@types/mongoose": "^5.5.11",
+    "@types/morgan": "^1.7.36",
+    "@types/node": "^12.6.8",
+    "jest": "^24.8.0",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.3.0",
+    "tsc-watch": "^2.2.1",
+    "tsconfig-paths": "^3.8.0",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
   }
 }

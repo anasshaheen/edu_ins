@@ -1,0 +1,71 @@
+import { User, CourseStudent, Course } from '../../../db';
+import { roles } from '../../../constants';
+import { responses, hash } from '../../../utils';
+import { IUser } from '../../../interfaces';
+
+export default {
+  Mutation: {
+    addStudent: async (_: any, { input }: { input: IUser }) => {
+      let user = await User.findOne({
+        $or: [{ phone: input.phone }, { email: input.email }],
+      });
+      if (user) {
+        throw new Error('User is already exists!');
+      }
+
+      await User.create({
+        name: input.name,
+        email: input.email,
+        phone: input.phone,
+        passowrd: await hash(input.password),
+        role: roles.STUDENT,
+        createdAt: new Date(),
+      });
+
+      return responses.add('Student');
+    },
+    async addStudentsToCourse(
+      _: any,
+      { courseId, students }: { courseId: string; students: [string] },
+    ) {
+      if (!students.length) {
+        throw new Error('Please, provide valid students');
+      }
+
+      const course = await Course.findById(courseId);
+      if (!course) {
+        throw new Error('Course not found!');
+      }
+
+      await CourseStudent.insertMany(
+        students.map(studentId => ({
+          student: studentId,
+          course: courseId,
+          enrollementDate: new Date(),
+        })),
+      );
+
+      return responses.add('Course students');
+    },
+    async removeStudentsFromCourse(
+      _: any,
+      { courseId, students }: { courseId: string; students: [string] },
+    ) {
+      if (!students.length) {
+        throw new Error('Please, provide valid students');
+      }
+
+      const course = await Course.findById(courseId);
+      if (!course) {
+        throw new Error('Course not found!');
+      }
+
+      await CourseStudent.deleteMany({
+        student: students,
+        course: courseId,
+      });
+
+      return responses.remove('Course students');
+    },
+  },
+};
