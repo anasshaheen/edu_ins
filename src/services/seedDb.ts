@@ -1,28 +1,20 @@
+import { User } from '../db';
 import { roles } from '../constants';
 
-const { User } = require('../db');
-
-const { hash } = require('../utils');
-
 export default async () => {
-  try {
-    const count = await User.collection.countDocuments({
-      role: roles.ADMIN,
-    });
-    if (count) {
-      return;
-    }
-
-    const admin = new User({
-      phone: '000000000',
-      name: 'Admin',
-      email: 'admin@gmail.com',
-      password: await hash('password'),
-      role: roles.ADMIN,
-      avatar: 'http://placehold.it/200/200',
-    });
-    await admin.save();
-  } catch (err) {
-    console.log(err);
+  const count = await User.countDocuments({
+    role: roles.ADMIN,
+  });
+  if (count) {
+    return;
   }
+
+  await User.create({
+    phone: '000000000',
+    name: 'Admin',
+    email: 'admin@gmail.com',
+    role: roles.ADMIN,
+    password: '$2b$10$V1AIkl7GgUGRaY/Ii460jesMgM.Ddhms66pxwqwb4WkHmB//zVJ7a', // password
+    avatar: 'http://placehold.it/200/200',
+  });
 };

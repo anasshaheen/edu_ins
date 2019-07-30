@@ -9,7 +9,8 @@ export default () => {
     useCreateIndex: true,
     useNewUrlParser: true,
   });
-  mongoose.connection.once('open', () =>
-    console.log(`Connected to db at ${db.DATABASE_URI}`),
-  );
+
+  mongoose.connection.once('open', async () => {
+    console.log(`Connected to db at ${db.DATABASE_URI}`);
+  });
 };

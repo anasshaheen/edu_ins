@@ -1,5 +1,8 @@
+import { HostingEnvironment } from '../utils';
+
 interface ServerConfig {
   apollo: ApolloConfig;
+  env: string;
   port: number | undefined;
 }
 
@@ -8,11 +11,14 @@ interface ApolloConfig {
   playground: boolean;
 }
 
+const nodeEnv = <string>process.env.NODE_ENV;
+const enablePlaygound = HostingEnvironment.isDevelopment(nodeEnv);
 const serverConfig: ServerConfig = {
   apollo: {
-    introspection: process.env.INTROSPECTION === 'TRUE',
-    playground: process.env.PLAYGROUND === 'TRUE',
+    introspection: enablePlaygound,
+    playground: enablePlaygound,
   },
+  env: nodeEnv,
   port: <number | undefined>process.env.PORT,
 };
 

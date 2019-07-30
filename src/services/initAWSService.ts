@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 
-const { aws: awsOptions } = require('../config');
+import { aws as awsOptions } from '../config';
 
 export default () => {
   AWS.config.update({

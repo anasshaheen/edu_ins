@@ -1,5 +1,5 @@
 import { User } from '../../../db';
-import { compare, generateToken } from '../../../utils';
+import { HashUtils, TokenUtils } from '../../../utils';
 import { jsonWebToken } from '../../../config';
 import { ILogin } from '../../../interfaces';
 
@@ -14,13 +14,13 @@ export default {
         throw new Error('User not found!');
       }
 
-      if (!(await compare(password, user.password))) {
+      if (!(await HashUtils.comparePass(password, user.password))) {
         throw new Error('Email or password are wrong!');
       }
 
       return {
         token: {
-          access_token: generateToken({ email: user.email }),
+          access_token: TokenUtils.generate({ email: user.email }),
           expires_in: jsonWebToken.options.expiresIn,
         },
         user,

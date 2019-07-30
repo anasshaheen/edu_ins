@@ -1,5 +1,5 @@
 import { User } from '../../../db';
-import { responses, hash, compare, uploadFile } from '../../../utils';
+import { responses, HashUtils, uploadFile } from '../../../utils';
 import { IUser } from '../../../interfaces';
 
 export default {
@@ -24,13 +24,13 @@ export default {
         throw new Error('User not found!');
       }
 
-      if (!(await compare(input.oldPassword, user.password))) {
+      if (!(await HashUtils.comparePass(input.oldPassword, user.password))) {
         throw new Error('Password does not match.');
       }
 
       await user
         .update({
-          password: await hash(input.newPassword),
+          password: await HashUtils.hashPass(input.newPassword),
           updatedAt: new Date(),
         })
         .exec();

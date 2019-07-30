@@ -1,10 +1,13 @@
-const { User } = require('../db');
+import { User } from '../db';
+import { IAuthState } from '../interfaces';
 
-export default async (email: string) => {
-  const user = await User.findOne({ email });
+async function getUser(email: string): Promise<IAuthState> {
+  const user = <any>await User.findOne({ email });
   if (!user) {
     return { user: undefined, isLoggedIn: false };
   }
 
   return { user, isLoggedIn: true };
-};
+}
+
+export default getUser;

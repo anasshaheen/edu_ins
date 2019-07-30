@@ -6,7 +6,7 @@
   "author": "Anas Shaheen",
   "repository": "https://github.com/anasshaheen/edu_ins",
   "scripts": {
-    "build": "rimraf build && tsc -p tsconfig.build.json",
+    "build": "rm -rf build && tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "ts-node -r tsconfig-paths/register ./main.ts",
     "start:dev": "tsc-watch -p tsconfig.build.json --onSuccess \"node build/main.js\"",
@@ -36,7 +36,6 @@
     "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
-    "@types/aws-sdk": "^2.7.0",
     "@types/bcrypt": "^3.0.0",
     "@types/compression": "^0.0.36",
     "@types/dotenv": "^6.1.1",
