@@ -1,7 +1,7 @@
 import { ApolloServer } from 'apollo-server-express';
 
 import schema from '../schema';
-import { validateToken } from '../utils';
+import { TokenUtils } from '../utils';
 import { server as serverConfig } from '../config';
 
 export default () => {
@@ -16,7 +16,9 @@ export default () => {
       path: '/subscriptions',
       async onConnect(connectionParams: any, _: any) {
         if ((<any>connectionParams).authToken) {
-          return await validateToken((<any>connectionParams).authToken);
+          return await TokenUtils.validateToken(
+            (<any>connectionParams).authToken,
+          );
         }
 
         throw new Error('User is not authorized!');
@@ -36,7 +38,7 @@ export default () => {
 
         token = token.substring(7).trim();
 
-        return await validateToken(token);
+        return await TokenUtils.validateToken(token);
       }
     },
   });

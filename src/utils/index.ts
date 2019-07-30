@@ -1,21 +1,15 @@
-import hash from './hash';
-import compare from './compare';
-import generateToken from './generateToken';
-import verifyToken from './verifyToken';
-import decodeToken from './decodeToken';
+import HashUtils from './hash';
 import responses from './responses';
 import uploadFile from './uploadFile';
-import validateToken from './validateToken';
 import getUser from './getUser';
+import HostingEnvironment from './hostingEnvironment';
+import TokenUtils from './token';
 
 export {
-  hash,
-  compare,
-  generateToken,
-  verifyToken,
-  decodeToken,
   responses,
   uploadFile,
-  validateToken,
   getUser,
+  HostingEnvironment,
+  TokenUtils,
+  HashUtils,
 };

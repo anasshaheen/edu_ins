@@ -1,6 +1,6 @@
 import { User, CourseStudent, Course } from '../../../db';
 import { roles } from '../../../constants';
-import { responses, hash } from '../../../utils';
+import { responses, HashUtils } from '../../../utils';
 import { IUser } from '../../../interfaces';
 
 export default {
@@ -17,7 +17,7 @@ export default {
         name: input.name,
         email: input.email,
         phone: input.phone,
-        passowrd: await hash(input.password),
+        password: await HashUtils.hashPass(input.password),
         role: roles.STUDENT,
         createdAt: new Date(),
       });

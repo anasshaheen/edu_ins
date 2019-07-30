@@ -1,6 +1,6 @@
 import { User } from '../../../db';
 import { roles } from '../../../constants';
-import { responses, hash } from '../../../utils';
+import { responses, HashUtils } from '../../../utils';
 import { IAdmin } from '../../../interfaces';
 
 export default {
@@ -20,7 +20,7 @@ export default {
         name,
         email,
         phone,
-        passowrd: await hash(password),
+        password: await HashUtils.hashPass(password),
         role: roles.ADMIN,
         createdAt: new Date(),
       });

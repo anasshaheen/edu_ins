@@ -10,6 +10,7 @@ import ISyllableSection from './ISyllableSection';
 import ICourse from './ICourse';
 import IGeneralResource from './IGeneralResource';
 import IExamMark from './IExamMark';
+import IAuthState from './IAuthState';
 
 export {
   IPaging,
@@ -24,4 +25,5 @@ export {
   ISyllableSection,
   IGeneralResource,
   IExamMark,
+  IAuthState,
 };

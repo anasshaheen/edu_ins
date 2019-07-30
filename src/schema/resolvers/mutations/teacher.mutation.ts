@@ -1,6 +1,6 @@
 import { User } from '../../../db';
 import { roles } from '../../../constants';
-import { responses, hash } from '../../../utils';
+import { responses, HashUtils } from '../../../utils';
 import { IUser } from '../../../interfaces';
 
 export default {
@@ -13,7 +13,7 @@ export default {
         throw new Error('User is already exists!');
       }
 
-      input.password = await hash(input.password);
+      input.password = await HashUtils.hashPass(input.password);
       input.role = roles.TEACHER;
       input.createdAt = new Date();
       await User.create(input);

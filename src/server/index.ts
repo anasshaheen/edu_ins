@@ -11,19 +11,19 @@ import graphQLSchema from '../schema';
 const port = process.env.PORT || 4000;
 
 class Server {
-  server: ApolloServer;
-  app: Express;
+  private _server: ApolloServer;
+  private _app: Express;
 
   constructor() {
-    this.server = apollo();
-    this.app = express();
+    this._server = apollo();
+    this._app = express();
   }
 
   start() {
-    this.server.applyMiddleware({ app: this.app, path: '/graphql' });
+    this._server.applyMiddleware({ app: this._app, path: '/graphql' });
 
-    const httpServer = createServer(this.app);
-    this.server.installSubscriptionHandlers(httpServer);
+    const httpServer = createServer(this._app);
+    this._server.installSubscriptionHandlers(httpServer);
 
     httpServer.listen({ port }, () => {
       new SubscriptionServer(
@@ -36,7 +36,7 @@ class Server {
           }),
         },
         {
-          server: <any>this.app,
+          server: <any>this._app,
           path: '/subscriptions',
         },
       );
