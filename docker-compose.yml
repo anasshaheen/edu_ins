@@ -19,8 +19,6 @@ services:
       - .:/app
     links:
       - db
-    ports:
-      - '4000:4000'
     environment:
       - NODE_ENV=${NODE_ENV}
       - PORT=${PORT}
@@ -34,3 +32,14 @@ services:
       - AWS_SECRET_KEY=${AWS_SECRET_KEY}
       - AWS_BUCKET_REGION=${AWS_BUCKET_REGION}
       - AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
+
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - '80:80'
+    links:
+      - db
+      - server
