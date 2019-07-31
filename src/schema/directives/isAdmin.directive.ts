@@ -12,7 +12,7 @@ class IsAuthDirective extends SchemaDirectiveVisitor {
         throw new Error('User not authenticated');
       }
 
-      if (user.role !== roles.ADMIN) {
+      if (user.role !== roles.ADMIN && user.role !== roles.SUPER_ADMIN) {
         throw new Error('User is not authorized');
       }
 

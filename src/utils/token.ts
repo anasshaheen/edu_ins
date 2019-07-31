@@ -14,7 +14,7 @@ class TokenUtils {
   }
 
   static async validateToken(token: string): Promise<IAuthState> {
-    if (!this.verifyToken(token)) {
+    if (!(await this.verifyToken(token))) {
       return { user: undefined, isLoggedIn: false };
     }
 

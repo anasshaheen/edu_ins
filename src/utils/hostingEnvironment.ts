@@ -6,6 +6,10 @@ class HostingEnvironment {
   static isProduction(env: string) {
     return env.toLowerCase() === 'production';
   }
+
+  static isTesting(env: string) {
+    return env.toLowerCase() === 'testing';
+  }
 }
 
 export default HostingEnvironment;

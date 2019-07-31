@@ -11,7 +11,7 @@ export default {
     ) => {
       const user = <any>await User.findOne({ email });
       if (!user) {
-        throw new Error('User not found!');
+        throw new Error('Email or password are wrong!');
       }
 
       if (!(await HashUtils.comparePass(password, user.password))) {

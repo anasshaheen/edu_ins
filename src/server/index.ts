@@ -1,5 +1,5 @@
 import { makeExecutableSchema, ApolloServer } from 'apollo-server-express';
-import { createServer } from 'http';
+import { createServer, Server } from 'http';
 import { subscribe, execute } from 'graphql';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { Express } from 'express';
@@ -8,24 +8,31 @@ import apollo from './apollo';
 import express from './express';
 import graphQLSchema from '../schema';
 
-const port = process.env.PORT || 4000;
-
-class Server {
+class AppServer {
   private _server: ApolloServer;
   private _app: Express;
+  private _port: number;
 
-  constructor() {
+  constructor(port: number | undefined = undefined) {
     this._server = apollo();
     this._app = express();
+    this._port = port || (<number | undefined>process.env.PORT || 4000);
+    this._server.applyMiddleware({ app: this._app, path: '/graphql' });
   }
 
-  start() {
-    this._server.applyMiddleware({ app: this._app, path: '/graphql' });
+  get apolloServer(): ApolloServer {
+    return this._server;
+  }
 
+  get express() {
+    return this._app;
+  }
+
+  start(): Server {
     const httpServer = createServer(this._app);
     this._server.installSubscriptionHandlers(httpServer);
 
-    httpServer.listen({ port }, () => {
+    return httpServer.listen({ port: this._port }, () => {
       new SubscriptionServer(
         {
           execute,
@@ -44,4 +51,4 @@ class Server {
   }
 }
 
-export default Server;
+export default AppServer;
