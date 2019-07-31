@@ -1,6 +1,7 @@
 import { User } from '../../../db';
 import { responses, HashUtils, uploadFile } from '../../../utils';
 import { IUser } from '../../../interfaces';
+import { roles } from '../../../constants';
 
 export default {
   Mutation: {
@@ -10,7 +11,7 @@ export default {
       { user: { _id } }: { user: IUser },
     ) {
       input.updatedAt = new Date();
-      await User.findByIdAndUpdate(_id, input);
+      await User.updateOne({ _id }, input);
 
       return responses.update('User');
     },
@@ -29,7 +30,7 @@ export default {
       }
 
       await user
-        .update({
+        .updateOne({
           password: await HashUtils.hashPass(input.newPassword),
           updatedAt: new Date(),
         })
@@ -46,20 +47,40 @@ export default {
       const stream = createReadStream();
 
       const data = await uploadFile(`${_id}${mimetype}`, stream);
-      await User.findByIdAndUpdate(_id, {
-        avatar: data.Location,
-        updatedAt: new Date(),
-      });
+      await User.updateOne(
+        { _id },
+        {
+          avatar: data.Location,
+          updatedAt: new Date(),
+        },
+      );
 
       return responses.update('Avatar');
     },
-    removeUser: async (_: any, { id }: { id: string }) => {
-      const user = await User.findById(id);
+    removeUser: async (
+      _: any,
+      { id }: { id: string },
+      { user: { _id, role } }: { user: IUser },
+    ) => {
+      const user = <any>await User.findById(id);
       if (!user) {
         throw new Error('User not found!');
       }
 
-      await user.remove();
+      if (
+        user._id === _id ||
+        role === roles.SUPER_ADMIN ||
+        (role === roles.ADMIN &&
+          (user.role === roles.STUDENT || user.role === roles.TEACHER))
+      ) {
+        await user.remove();
+      } else {
+        if (user.role === roles.ADMIN) {
+          throw new Error('Admins can be removed only by SUPER ADMIN.');
+        }
+
+        throw new Error("You're not authorized to perferm this action!");
+      }
 
       return responses.remove('User');
     },

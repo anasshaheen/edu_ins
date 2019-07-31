@@ -5,6 +5,6 @@ export default gql`
     uploadAvatar(file: Upload!): ResponseOutput @isAuth
     updateUser(input: UpdateUserInput): ResponseOutput @isAuth
     changePassword(input: ChangePasswordInput): ResponseOutput @isAuth
-    removeUser(id: String): ResponseOutput @isAuth @isAdmin
+    removeUser(id: String!): ResponseOutput @isAuth @isAdmin
   }
 `;

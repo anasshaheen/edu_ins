@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    volumes:
+      - /app/node_modules
+      - .:/app
+    links:
+      - db
+    ports:
+      - '4000:4000'
+    environment:
+      - NODE_ENV=testing
+      - PORT=4000
+      - TEST_DATABASE_URI=${TEST_DATABASE_URI}
+      - ISSUER=${ISSUER}
+      - SUBJECT=${SUBJECT}
+      - AUDIENCE=${AUDIENCE}
+      - EXPIRES_IN=${EXPIRES_IN}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - AWS_BUCKET_REGION=${AWS_BUCKET_REGION}
+      - AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
