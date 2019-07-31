@@ -1,11 +1,8 @@
-import axios from 'axios';
-
-import constants from '../constants';
 import { userQueries } from '../queries';
 import { userMutations } from '../mutations';
+import execute from './execute';
 
 class UserAPI {
-  private static _apiUrl: string = constants.API_URL;
   private static _tokens: any = {
     admin: '',
     teacher: '',
@@ -32,47 +29,25 @@ class UserAPI {
   }
 
   static async authenticate(email: string, password: string) {
-    return await axios.post(this._apiUrl, {
-      query: userMutations.LOGIN,
-      variables: {
-        email,
-        password,
-      },
+    return await execute(userMutations.LOGIN, undefined, {
+      email,
+      password,
     });
   }
 
-  private static async execute(
-    query: string,
-    role: string = '',
-    variables: any = {},
-  ) {
-    return await axios.post(
-      this._apiUrl,
-      {
-        query: query,
-        variables: variables,
-      },
-      {
-        headers: {
-          authorization: `bearer ${this._tokens[role]}`,
-        },
-      },
-    );
-  }
-
   static async getAdmins(role: string) {
-    return await this.execute(userQueries.GET_ADMINS, role);
+    return await execute(userQueries.GET_ADMINS, this._tokens[role]);
   }
 
   static async getTeachers(role: string, page: number, limit: number) {
-    return await this.execute(userQueries.GET_TEACHERS, role, {
+    return await execute(userQueries.GET_TEACHERS, this._tokens[role], {
       page,
       limit,
     });
   }
 
   static async getStudents(role: string, page: number, limit: number) {
-    return await this.execute(userQueries.GET_STUDENTS, role, {
+    return await execute(userQueries.GET_STUDENTS, this._tokens[role], {
       page,
       limit,
     });
@@ -84,39 +59,59 @@ class UserAPI {
     page: number,
     limit: number,
   ) {
-    return await this.execute(userQueries.GET_SEARCH_FOR_STUDENTS, role, {
-      query,
-      page,
-      limit,
-    });
+    return await execute(
+      userQueries.GET_SEARCH_FOR_STUDENTS,
+      this._tokens[role],
+      {
+        query,
+        page,
+        limit,
+      },
+    );
   }
 
   static async addAdmin(role: string, userDetails: object) {
-    return await this.execute(userMutations.ADD_ADMIN, role, userDetails);
+    return await execute(
+      userMutations.ADD_ADMIN,
+      this._tokens[role],
+      userDetails,
+    );
   }
 
   static async addTeacher(role: string, userDetails: object) {
-    return await this.execute(userMutations.ADD_TEACHER, role, userDetails);
+    return await execute(
+      userMutations.ADD_TEACHER,
+      this._tokens[role],
+      userDetails,
+    );
   }
 
   static async addStudent(role: string, userDetails: object) {
-    return await this.execute(userMutations.ADD_STUDENT, role, userDetails);
+    return await execute(
+      userMutations.ADD_STUDENT,
+      this._tokens[role],
+      userDetails,
+    );
   }
 
   static async updateUserDetails(role: string, userDetails: object) {
-    return await this.execute(
+    return await execute(
       userMutations.UPDATE_USER_DETAILS,
-      role,
+      this._tokens[role],
       userDetails,
     );
   }
 
   static async changePassword(role: string, userDetails: object) {
-    return await this.execute(userMutations.CHANGE_PASSWORD, role, userDetails);
+    return await execute(
+      userMutations.CHANGE_PASSWORD,
+      this._tokens[role],
+      userDetails,
+    );
   }
 
   static async removeUser(role: string, id: string) {
-    return await this.execute(userMutations.REMOVE_USER, role, {
+    return await execute(userMutations.REMOVE_USER, this._tokens[role], {
       id,
     });
   }

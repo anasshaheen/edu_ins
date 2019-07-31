@@ -245,7 +245,7 @@ describe('Mutation: Add users with different roles', () => {
     done();
   });
 
-  test('ADD_ADMIN_InValidData_HaveAcess_ShouldSucceed', async done => {
+  test('ADD_ADMIN_InValidData_HaveAcess_ShouldFail', async done => {
     try {
       await UserAPI.addAdmin('admin', {
         email: 'newAdmin@admin.com',
@@ -265,7 +265,7 @@ describe('Mutation: Add users with different roles', () => {
     }
   });
 
-  test('ADD_ADMIN_ValidData_HaveNoAcess_ShouldSucceed', async done => {
+  test('ADD_ADMIN_ValidData_HaveNoAcess_ShouldFail', async done => {
     const res = await UserAPI.addAdmin('teacher', {
       email: 'newAdmin2@admin.com',
       name: 'new admin',
@@ -285,7 +285,7 @@ describe('Mutation: Add users with different roles', () => {
     done();
   });
 
-  test('ADD_ADMIN_InValidData_HaveNoAcess_ShouldSucceed', async done => {
+  test('ADD_ADMIN_InValidData_HaveNoAcess_ShouldFail', async done => {
     try {
       await UserAPI.addAdmin('teacher', {
         email: 'newAdmin@admin.com',
@@ -328,7 +328,7 @@ describe('Mutation: Add users with different roles', () => {
     done();
   });
 
-  test('ADD_TEACHER_InValidData_HaveAcess_ShouldSucceed', async done => {
+  test('ADD_TEACHER_InValidData_HaveAcess_ShouldFail', async done => {
     try {
       await UserAPI.addTeacher('admin', {
         email: 'newTeacher@teacher.com',
@@ -348,7 +348,7 @@ describe('Mutation: Add users with different roles', () => {
     }
   });
 
-  test('ADD_TEACHER_ValidData_HaveNoAcess_ShouldSucceed', async done => {
+  test('ADD_TEACHER_ValidData_HaveNoAcess_ShouldFail', async done => {
     const res = await UserAPI.addTeacher('student', {
       email: 'newTeacher@teacher.com',
       name: 'new teacher',
@@ -368,7 +368,7 @@ describe('Mutation: Add users with different roles', () => {
     done();
   });
 
-  test('ADD_TEACHER_InValidData_HaveNoAcess_ShouldSucceed', async done => {
+  test('ADD_TEACHER_InValidData_HaveNoAcess_ShouldFail', async done => {
     try {
       await UserAPI.addTeacher('student', {
         email: 'newTeacher2@teacher.com',
@@ -411,7 +411,7 @@ describe('Mutation: Add users with different roles', () => {
     done();
   });
 
-  test('ADD_STUDENT_InValidData_HaveAcess_ShouldSucceed', async done => {
+  test('ADD_STUDENT_InValidData_HaveAcess_ShouldFail', async done => {
     try {
       await UserAPI.addStudent('admin', {
         email: 'newStudent@student.com',
@@ -431,7 +431,7 @@ describe('Mutation: Add users with different roles', () => {
     }
   });
 
-  test('ADD_STUDENT_ValidData_HaveNoAcess_ShouldSucceed', async done => {
+  test('ADD_STUDENT_ValidData_HaveNoAcess_ShouldFail', async done => {
     const res = await UserAPI.addStudent('student', {
       email: 'newStudent@student.com',
       name: 'new student',
@@ -451,7 +451,7 @@ describe('Mutation: Add users with different roles', () => {
     done();
   });
 
-  test('ADD_STUDENT_InValidData_HaveNoAcess_ShouldSucceed', async done => {
+  test('ADD_STUDENT_InValidData_HaveNoAcess_ShouldFail', async done => {
     try {
       await UserAPI.addStudent('student', {
         email: 'newStudent@student.com',
@@ -517,7 +517,7 @@ describe('Mutation: Manage users accounts', () => {
     done();
   });
 
-  test('CHANGE_PASSWORD_InValidData_ShouldSucceed', async done => {
+  test('CHANGE_PASSWORD_InValidData_ShouldFail', async done => {
     const res = await UserAPI.changePassword('teacher', {
       oldPassword: 'wrong password',
       newPassword: 'newPassword',
@@ -552,7 +552,7 @@ describe('Mutation: Manage users accounts', () => {
     done();
   });
 
-  test('REMOVE_USER_InValidID_HaveAccess_ShouldSucceed', async done => {
+  test('REMOVE_USER_InValidID_HaveAccess_ShouldFail', async done => {
     const res = await UserAPI.removeUser('teacher', userToBeRmoved1);
 
     expect(res.status).toEqual(200);
