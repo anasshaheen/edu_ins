@@ -7,7 +7,7 @@ class IsAuthDirective extends SchemaDirectiveVisitor {
     field.resolve = (...args: any[]) => {
       const [, , { user, isLoggedIn }] = args;
       if (!user && !isLoggedIn) {
-        throw new Error('User not authenticated');
+        throw new Error('User is not authenticated');
       }
 
       return resolve.apply(this, args);

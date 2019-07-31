@@ -8,7 +8,7 @@ export default () => {
   const server = new ApolloServer({
     typeDefs: schema.typeDefs,
     resolvers: schema.resolvers,
-    tracing: true,
+    tracing: serverConfig.apollo.tracing,
     schemaDirectives: schema.schemaDirectives,
     introspection: serverConfig.apollo.introspection,
     playground: serverConfig.apollo.playground,

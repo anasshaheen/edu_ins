@@ -1,17 +1,13 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
-
 import { initDb, initAWSService, seedDb } from './services';
-import Server from './server';
+import AppServer from './server';
 
 export default async () => {
   try {
-    initDb();
+    await initDb();
     initAWSService();
     await seedDb();
 
-    const server = new Server();
+    const server = new AppServer();
     server.start();
   } catch (err) {
     console.log(err);
