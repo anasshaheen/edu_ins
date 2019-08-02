@@ -9,7 +9,7 @@ import path from 'path';
 export default () => {
   const app = express();
 
-  var accessLogStream = fs.createWriteStream(
+  const accessLogStream = fs.createWriteStream(
     path.join(__dirname, 'access.log'),
     { flags: 'a' },
   );

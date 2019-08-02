@@ -17,7 +17,7 @@ const schema = {
     ...subscriptions,
     directives.schema,
   ],
-  resolvers: resolvers,
+  resolvers,
   schemaDirectives: directives.schemaDirectives,
 };
 

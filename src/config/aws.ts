@@ -6,10 +6,10 @@ interface AWSOptions {
 }
 
 const awsOptions: AWSOptions = {
-  awsAccessKeyId: <string>process.env.AWS_ACCESS_KEY_ID,
-  awsSecretKey: <string>process.env.AWS_SECRET_KEY,
-  bucketRegion: <string>process.env.AWS_BUCKET_REGION,
-  bucketName: <string>process.env.AWS_BUCKET_NAME,
+  awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
+  awsSecretKey: process.env.AWS_SECRET_KEY as string,
+  bucketRegion: process.env.AWS_BUCKET_REGION as string,
+  bucketName: process.env.AWS_BUCKET_NAME as string,
 };
 
 export default awsOptions;

@@ -12,7 +12,7 @@ interface ApolloConfig {
   tracing: boolean;
 }
 
-const nodeEnv = <string>process.env.NODE_ENV;
+const nodeEnv = process.env.NODE_ENV as string;
 const enablePlaygound = HostingEnvironment.isDevelopment(nodeEnv);
 const serverConfig: ServerConfig = {
   apollo: {
@@ -21,7 +21,7 @@ const serverConfig: ServerConfig = {
     tracing: enablePlaygound,
   },
   env: nodeEnv,
-  port: <number | undefined>process.env.PORT,
+  port: process.env.PORT as number | undefined,
 };
 
 export default serverConfig;

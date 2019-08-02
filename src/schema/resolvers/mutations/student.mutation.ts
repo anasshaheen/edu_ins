@@ -5,8 +5,8 @@ import { IUser } from '../../../interfaces';
 
 export default {
   Mutation: {
-    addStudent: async (_: any, { input }: { input: IUser }) => {
-      let user = await User.findOne({
+    addStudent: async (_: object, { input }: { input: IUser }) => {
+      const user = await User.findOne({
         $or: [{ phone: input.phone }, { email: input.email }],
       });
       if (user) {
@@ -25,7 +25,7 @@ export default {
       return responses.add('Student');
     },
     async addStudentsToCourse(
-      _: any,
+      _: object,
       { courseId, students }: { courseId: string; students: [string] },
     ) {
       if (!students.length) {
@@ -48,7 +48,7 @@ export default {
       return responses.add('Course students');
     },
     async removeStudentsFromCourse(
-      _: any,
+      _: object,
       { courseId, students }: { courseId: string; students: [string] },
     ) {
       if (!students.length) {

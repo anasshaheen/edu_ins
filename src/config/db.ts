@@ -5,9 +5,9 @@ interface DBOptions {
 }
 
 const dbOptions: DBOptions = {
-  DATABASE_URI: HostingEnvironment.isTesting(<string>process.env.NODE_ENV)
-    ? <string>process.env.TEST_DATABASE_URI
-    : <string>process.env.DATABASE_URI,
+  DATABASE_URI: HostingEnvironment.isTesting(process.env.NODE_ENV as string)
+    ? (process.env.TEST_DATABASE_URI as string)
+    : (process.env.DATABASE_URI as string),
 };
 
 export default dbOptions;

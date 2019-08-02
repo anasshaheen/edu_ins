@@ -6,7 +6,7 @@ import { IPaging } from '../../../interfaces';
 export default {
   Query: {
     teachers: async (
-      _: any,
+      _: object,
       { paging: { page = 1, limit = 10 } }: { paging: IPaging },
     ) => {
       const data = await User.find()

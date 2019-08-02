@@ -4,8 +4,8 @@ interface RedisOptions {
 }
 
 const options: RedisOptions = {
-  host: <string | undefined>process.env.REDIS_HOST,
-  port: <number>parseInt(<string>process.env.REDIS_PORT),
+  host: process.env.REDIS_HOST as string | undefined,
+  port: parseInt(process.env.REDIS_PORT as string, 10),
 };
 
 export default options;

@@ -12,12 +12,12 @@ interface JWTOptions {
 
 const jwtConfig: JWTConfig = {
   options: {
-    issuer: <string>process.env.ISSUER,
-    subject: <string>process.env.SUBJECT,
-    audience: <string>process.env.AUDIENCE,
-    expiresIn: <string>process.env.EXPIRES_IN,
+    issuer: process.env.ISSUER as string,
+    subject: process.env.SUBJECT as string,
+    audience: process.env.AUDIENCE as string,
+    expiresIn: process.env.EXPIRES_IN as string,
   },
-  privateKey: <string>process.env.PRIVATE_KEY,
+  privateKey: process.env.PRIVATE_KEY as string,
 };
 
 export default jwtConfig;

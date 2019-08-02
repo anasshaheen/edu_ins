@@ -5,21 +5,24 @@ import { ISyllableSection } from '../../../interfaces';
 export default {
   Mutation: {
     async addSyllableSection(
-      _: any,
+      _: object,
       { courseId, section }: { courseId: string; section: ISyllableSection },
     ) {
-      const course = <any>await Course.findById(courseId);
+      const course = await Course.findById(courseId);
       if (!course) {
         throw new Error('Course not found!');
       }
 
-      course.syllable.sections.push(section);
-      await course.save();
+      const syllable = course.get('syllable');
+      syllable.sections.push(section);
+      await course.updateOne({
+        syllable,
+      });
 
       return responses.add('Syllable Section');
     },
     async updateSyllableSection(
-      _: any,
+      _: object,
       {
         courseId,
         sectionId,
@@ -46,7 +49,7 @@ export default {
       return responses.update('Syllable Section');
     },
     async removeSyllableSection(
-      _: any,
+      _: object,
       { courseId, sectionId }: { courseId: string; sectionId: string },
     ) {
       const course = await Course.findById(courseId);

@@ -5,35 +5,34 @@ import { IGeneralResource, IUser, IContextState } from '../../../interfaces';
 export default {
   Mutation: {
     async addGeneralResource(
-      _: any,
+      _: object,
       { input }: { input: IGeneralResource },
       { user }: IContextState,
     ) {
-      input.user = (<IUser>user)._id;
+      input.user = (user as IUser)._id;
       input.createdAt = new Date();
-      const resource = new GeneralResource(input);
-      await resource.save();
+      await GeneralResource.create(input);
 
       return responses.add('Resource');
     },
     async updateGeneralResource(
-      _: any,
+      _: object,
       { id, input }: { id: string; input: IGeneralResource },
     ) {
-      const resource = <any>await GeneralResource.findById(id);
+      const resource = await GeneralResource.findById(id);
       if (!resource) {
         throw new Error('Resource not found!');
       }
 
-      resource.title = input.title;
-      resource.description = input.description;
-      resource.url = input.url;
-
-      await resource.save();
+      await resource.updateOne({
+        title: input.title,
+        description: input.description,
+        url: input.url,
+      });
 
       return responses.update('Resource');
     },
-    async removeGeneralResource(_: any, { id }: { id: string }) {
+    async removeGeneralResource(_: object, { id }: { id: string }) {
       const resource = await GeneralResource.findById(id);
       if (!resource) {
         throw new Error('Resource not found!');

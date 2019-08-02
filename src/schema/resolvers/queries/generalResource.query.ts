@@ -4,7 +4,7 @@ import { IPaging } from '../../../interfaces';
 export default {
   Query: {
     async generalResources(
-      _: any,
+      _: object,
       { paging: { page = 1, limit = 10 } }: { paging: IPaging },
     ) {
       const data = await GeneralResource.find()
@@ -23,7 +23,7 @@ export default {
         totalRecords: GeneralResource.countDocuments().exec(),
       };
     },
-    async generalResource(_: any, { id }: { id: string }) {
+    async generalResource(_: object, { id }: { id: string }) {
       return await GeneralResource.findById(id)
         .populate('user')
         .exec();

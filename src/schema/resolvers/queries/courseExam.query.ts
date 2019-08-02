@@ -4,7 +4,7 @@ import { IPaging } from '../../../interfaces';
 export default {
   Query: {
     async courseExams(
-      _: any,
+      _: object,
       {
         paging: { page = 1, limit = 10 },
         courseId,
@@ -30,8 +30,10 @@ export default {
         }).exec(),
       };
     },
-    async courseExam(_: any, { id }: { id: string }) {
-      return await Exam.findById(id).populate('author');
+    async courseExam(_: object, { id }: { id: string }) {
+      return await Exam.findById(id)
+        .populate('author')
+        .exec();
     },
   },
 };

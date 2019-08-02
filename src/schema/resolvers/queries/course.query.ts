@@ -16,10 +16,10 @@ async function setCoursesIfNotExists(redisClient: RedisClient) {
     redisClient.setWithExpirationTime(
       Cache.CacheKeys.COURSES,
       Cache.CacheExpirationTimes.COURSE_EXPIRATION_TIME,
-      JSON.stringify(courses),
+      courses,
     );
   } else {
-    courses = JSON.parse(await redisClient.get(Cache.CacheKeys.COURSES));
+    courses = await redisClient.get(Cache.CacheKeys.COURSES);
   }
 
   return courses;
@@ -28,11 +28,11 @@ async function setCoursesIfNotExists(redisClient: RedisClient) {
 export default {
   Query: {
     async courses(
-      _: any,
+      _: object,
       { paging: { page = 1, limit = 10 } }: { paging: IPaging },
       { redisClient }: IContextState,
     ) {
-      let courses = await setCoursesIfNotExists(redisClient);
+      const courses = await setCoursesIfNotExists(redisClient);
 
       const data: ICourse[] = [];
       const itemsToSkip = limit * (page - 1);
@@ -50,11 +50,12 @@ export default {
       };
     },
     async course(
-      _: any,
+      _: object,
       { id }: { id: string },
       { redisClient }: IContextState,
     ) {
-      let courses = await setCoursesIfNotExists(redisClient);
+      const courses = await setCoursesIfNotExists(redisClient);
+
       const searchResult = courses.filter(
         (course: ICourse) => course._id === id,
       );
@@ -64,12 +65,11 @@ export default {
 
         return course;
       }
-      console.log(searchResult, courses);
 
       throw new Error('Course does not exists!');
     },
     async courseStudents(
-      _: any,
+      _: object,
       {
         courseId,
         paging: { page = 1, limit = 10 },

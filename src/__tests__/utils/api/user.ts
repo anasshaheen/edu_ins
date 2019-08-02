@@ -3,12 +3,7 @@ import { userMutations } from '../mutations';
 import execute from './execute';
 
 class UserAPI {
-  private static _tokens: any = {
-    admin: '',
-    teacher: '',
-    student: '',
-    invalid: '',
-  };
+  private static tokens: Map<string, string> = new Map<string, string>();
 
   static async initTokens() {
     const admin = await UserAPI.authenticate('user1@gmail.com', 'password');
@@ -21,11 +16,11 @@ class UserAPI {
   }
 
   static setToken(role: string, value: string) {
-    this._tokens[role] = value;
+    this.tokens.set(role, value);
   }
 
   static getToken(role: string) {
-    return this._tokens[role];
+    return this.tokens.get(role);
   }
 
   static async authenticate(email: string, password: string) {
@@ -36,18 +31,18 @@ class UserAPI {
   }
 
   static async getAdmins(role: string) {
-    return await execute(userQueries.GET_ADMINS, this._tokens[role]);
+    return await execute(userQueries.GET_ADMINS, this.tokens.get(role));
   }
 
   static async getTeachers(role: string, page: number, limit: number) {
-    return await execute(userQueries.GET_TEACHERS, this._tokens[role], {
+    return await execute(userQueries.GET_TEACHERS, this.tokens.get(role), {
       page,
       limit,
     });
   }
 
   static async getStudents(role: string, page: number, limit: number) {
-    return await execute(userQueries.GET_STUDENTS, this._tokens[role], {
+    return await execute(userQueries.GET_STUDENTS, this.tokens.get(role), {
       page,
       limit,
     });
@@ -61,7 +56,7 @@ class UserAPI {
   ) {
     return await execute(
       userQueries.GET_SEARCH_FOR_STUDENTS,
-      this._tokens[role],
+      this.tokens.get(role),
       {
         query,
         page,
@@ -73,7 +68,7 @@ class UserAPI {
   static async addAdmin(role: string, userDetails: object) {
     return await execute(
       userMutations.ADD_ADMIN,
-      this._tokens[role],
+      this.tokens.get(role),
       userDetails,
     );
   }
@@ -81,7 +76,7 @@ class UserAPI {
   static async addTeacher(role: string, userDetails: object) {
     return await execute(
       userMutations.ADD_TEACHER,
-      this._tokens[role],
+      this.tokens.get(role),
       userDetails,
     );
   }
@@ -89,7 +84,7 @@ class UserAPI {
   static async addStudent(role: string, userDetails: object) {
     return await execute(
       userMutations.ADD_STUDENT,
-      this._tokens[role],
+      this.tokens.get(role),
       userDetails,
     );
   }
@@ -97,7 +92,7 @@ class UserAPI {
   static async updateUserDetails(role: string, userDetails: object) {
     return await execute(
       userMutations.UPDATE_USER_DETAILS,
-      this._tokens[role],
+      this.tokens.get(role),
       userDetails,
     );
   }
@@ -105,13 +100,13 @@ class UserAPI {
   static async changePassword(role: string, userDetails: object) {
     return await execute(
       userMutations.CHANGE_PASSWORD,
-      this._tokens[role],
+      this.tokens.get(role),
       userDetails,
     );
   }
 
   static async removeUser(role: string, id: string) {
-    return await execute(userMutations.REMOVE_USER, this._tokens[role], {
+    return await execute(userMutations.REMOVE_USER, this.tokens.get(role), {
       id,
     });
   }

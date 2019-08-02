@@ -6,21 +6,21 @@ import { ILogin } from '../../../interfaces';
 export default {
   Mutation: {
     login: async (
-      _: any,
+      _: object,
       { input: { email, password } }: { input: ILogin },
     ) => {
-      const user = <any>await User.findOne({ email });
+      const user = await User.findOne({ email }).exec();
       if (!user) {
         throw new Error('Email or password are wrong!');
       }
 
-      if (!(await HashUtils.comparePass(password, user.password))) {
+      if (!(await HashUtils.comparePass(password, user.get('password')))) {
         throw new Error('Email or password are wrong!');
       }
 
       return {
         token: {
-          access_token: TokenUtils.generate({ email: user.email }),
+          access_token: TokenUtils.generate({ email: user.get('email') }),
           expires_in: jsonWebToken.options.expiresIn,
         },
         user,

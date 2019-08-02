@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server-express';
-import { IContextState } from 'src/interfaces';
+import { IContextState, IExpressContext } from 'src/interfaces';
 
 import { server as serverConfig } from '../config';
 import schema from '../schema';
@@ -7,7 +7,10 @@ import { RedisClient, TokenUtils } from '../utils';
 
 const redisClient = new RedisClient();
 
-async function handleContext({ req, connection }: any): Promise<IContextState> {
+async function handleContext({
+  req,
+  connection,
+}: IExpressContext): Promise<IContextState> {
   if (connection) {
     return connection.context;
   } else {
@@ -43,11 +46,9 @@ export default () => {
     playground: serverConfig.apollo.playground,
     subscriptions: {
       path: '/subscriptions',
-      async onConnect(connectionParams: any, _: any) {
-        if ((<any>connectionParams).authToken) {
-          return await TokenUtils.validateToken(
-            (<any>connectionParams).authToken,
-          );
+      async onConnect(connectionParams: any) {
+        if (connectionParams.authToken) {
+          return await TokenUtils.validateToken(connectionParams.authToken);
         }
 
         throw new Error('User is not authorized!');
