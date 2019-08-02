@@ -10,8 +10,8 @@ async function execute(
   return await axios.post(
     constants.API_URL,
     {
-      query: query,
-      variables: variables,
+      query,
+      variables,
     },
     {
       headers: token

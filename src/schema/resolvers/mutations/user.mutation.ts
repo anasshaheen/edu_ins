@@ -6,27 +6,30 @@ import { roles } from '../../../constants';
 export default {
   Mutation: {
     async updateUser(
-      _: any,
+      _: object,
       { input }: { input: IUser },
       { user }: IContextState,
     ) {
       input.updatedAt = new Date();
-      await User.updateOne({ _id: (<IUser>user)._id }, input);
+      await User.updateOne({ _id: (user as IUser)._id }, input);
 
       return responses.update('User');
     },
     async changePassword(
-      _: any,
+      _: object,
       { input }: { input: { oldPassword: string; newPassword: string } },
       { user }: IContextState,
     ) {
-      const userToUpdate = <any>await User.findById((<IUser>user)._id);
+      const userToUpdate = await User.findById((user as IUser)._id);
       if (!userToUpdate) {
         throw new Error('User not found!');
       }
 
       if (
-        !(await HashUtils.comparePass(input.oldPassword, userToUpdate.password))
+        !(await HashUtils.comparePass(
+          input.oldPassword,
+          userToUpdate.get('password'),
+        ))
       ) {
         throw new Error('Password does not match.');
       }
@@ -41,16 +44,19 @@ export default {
       return responses.update('Password');
     },
     async uploadAvatar(
-      _: any,
+      _: object,
       { file }: { file: any },
       { user }: IContextState,
     ) {
       const { createReadStream, mimetype } = await file;
       const stream = createReadStream();
 
-      const data = await uploadFile(`${(<IUser>user)._id}${mimetype}`, stream);
+      const data = await uploadFile(
+        `${(user as IUser)._id}${mimetype}`,
+        stream,
+      );
       await User.updateOne(
-        { _id: (<IUser>user)._id },
+        { _id: (user as IUser)._id },
         {
           avatar: data.Location,
           updatedAt: new Date(),
@@ -60,29 +66,29 @@ export default {
       return responses.update('Avatar');
     },
     removeUser: async (
-      _: any,
+      _: object,
       { id }: { id: string },
       { user }: IContextState,
     ) => {
-      const userToUpdate = <any>await User.findById(id);
+      const userToUpdate = await User.findById(id);
       if (!userToUpdate) {
         throw new Error('User not found!');
       }
 
       if (
-        userToUpdate._id === (<IUser>user)._id ||
-        (<IUser>user).role === roles.SUPER_ADMIN ||
-        ((<IUser>user).role === roles.ADMIN &&
-          (userToUpdate.role === roles.STUDENT ||
-            userToUpdate.role === roles.TEACHER))
+        userToUpdate._id === (user as IUser)._id ||
+        (user as IUser).role === roles.SUPER_ADMIN ||
+        ((user as IUser).role === roles.ADMIN &&
+          (userToUpdate.get('role') === roles.STUDENT ||
+            userToUpdate.get('role') === roles.TEACHER))
       ) {
         await userToUpdate.remove();
       } else {
-        if (userToUpdate.role === roles.ADMIN) {
+        if (userToUpdate.get('role') === roles.ADMIN) {
           throw new Error('Admins can be removed only by SUPER ADMIN.');
         }
 
-        throw new Error("You're not authorized to perferm this action!");
+        throw new Error('You are not authorized to perferm this action!');
       }
 
       return responses.remove('User');

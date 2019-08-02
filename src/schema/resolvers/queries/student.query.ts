@@ -5,7 +5,7 @@ import { IPaging } from '../../../interfaces';
 export default {
   Query: {
     async students(
-      _: any,
+      _: object,
       { paging: { page = 1, limit = 10 } }: { paging: IPaging },
     ) {
       const data = await User.find()
@@ -29,7 +29,7 @@ export default {
       };
     },
     async searchForStudent(
-      _: any,
+      _: object,
       {
         paging: { page = 1, limit = 10 },
         query,

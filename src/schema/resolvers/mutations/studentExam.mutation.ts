@@ -5,7 +5,7 @@ import { IExamMark } from '../../../interfaces';
 export default {
   Mutation: {
     async addExamMarks(
-      _: any,
+      _: object,
       { examId, input }: { examId: string; input: [Partial<IExamMark>] },
     ) {
       const exam = await Exam.findById(examId);
@@ -23,10 +23,10 @@ export default {
       return responses.add('Exam Marks');
     },
     async updateExamMark(
-      _: any,
+      _: object,
       { input, examId }: { input: IExamMark; examId: string },
     ) {
-      const examMark = <any>await ExamMark.findOne({
+      const examMark = await ExamMark.findOne({
         exam: examId,
         student: input.student,
       });
@@ -34,13 +34,14 @@ export default {
         throw new Error('ExamMark not found!');
       }
 
-      examMark.grade = input.grade;
-      await examMark.save();
+      await examMark.updateOne({
+        grade: input.grade,
+      });
 
       return responses.update('ExamMark');
     },
     async removeExamMark(
-      _: any,
+      _: object,
       { examId, studentId }: { examId: string; studentId: string },
     ) {
       const examMark = await ExamMark.findOne({

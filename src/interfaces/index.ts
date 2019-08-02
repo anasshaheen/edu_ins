@@ -4,6 +4,7 @@ import IContextState from './IContextState';
 import ICourse from './ICourse';
 import IExam from './IExam';
 import IExamMark from './IExamMark';
+import { IExecutionParams, IExpressContext } from './IExpressContext';
 import IGeneralResource from './IGeneralResource';
 import ILogin from './ILogin';
 import IPaging from './IPaging';
@@ -28,4 +29,6 @@ export {
   IExamMark,
   IAuthState,
   IContextState,
+  IExecutionParams,
+  IExpressContext,
 };

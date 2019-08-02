@@ -1,12 +1,14 @@
-import { Course } from '../../../db';
-import { responses } from '../../../utils';
-import { ICourse, IContextState } from '../../../interfaces';
+import { Document } from 'mongoose';
+
 import { Cache } from '../../../constants';
+import { Course } from '../../../db';
+import { IContextState, ICourse } from '../../../interfaces';
+import { responses } from '../../../utils';
 
 export default {
   Mutation: {
     async addCourse(
-      _: any,
+      _: object,
       { input }: { input: ICourse },
       { redisClient }: IContextState,
     ) {
@@ -14,21 +16,21 @@ export default {
       const course = await Course.create(input);
 
       if (await redisClient.exists(Cache.CacheKeys.COURSES)) {
-        const courses = JSON.parse(
-          await redisClient.get(Cache.CacheKeys.COURSES),
+        const courses: Document[] = await redisClient.get(
+          Cache.CacheKeys.COURSES,
         );
         courses.push(course);
         redisClient.setWithExpirationTime(
           Cache.CacheKeys.COURSES,
           Cache.CacheExpirationTimes.COURSE_EXPIRATION_TIME,
-          JSON.stringify(courses),
+          courses,
         );
       }
 
       return responses.add('Course');
     },
     async updateCourse(
-      _: any,
+      _: object,
       { id, input: { name, description } }: { id: string; input: ICourse },
       { redisClient }: IContextState,
     ) {
@@ -53,7 +55,7 @@ export default {
       return responses.update('Course');
     },
     async removeCourse(
-      _: any,
+      _: object,
       { id }: { id: string },
       { redisClient }: IContextState,
     ) {
@@ -70,7 +72,7 @@ export default {
       return responses.remove('Course');
     },
     async updateCourseTeachers(
-      _: any,
+      _: object,
       { id, teachers }: { id: string; teachers: [string] },
       { redisClient }: IContextState,
     ) {

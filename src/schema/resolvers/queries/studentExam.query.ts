@@ -4,7 +4,7 @@ import { IPaging } from '../../../interfaces';
 export default {
   Query: {
     async examMarks(
-      _: any,
+      _: object,
       {
         paging: { page = 1, limit = 10 },
         examId,
@@ -33,7 +33,7 @@ export default {
       };
     },
     async studentExamMarks(
-      _: any,
+      _: object,
       {
         paging: { page = 1, limit = 10 },
         studentId,
@@ -61,7 +61,7 @@ export default {
       };
     },
     async examMark(
-      _: any,
+      _: object,
       { studentId, examId }: { studentId: string; examId: string },
     ) {
       return await ExamMark.findOne({

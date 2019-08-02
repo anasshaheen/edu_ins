@@ -5,23 +5,26 @@ import { IResource, IUser, IContextState } from '../../../interfaces';
 export default {
   Mutation: {
     async addResource(
-      _: any,
+      _: object,
       { courseId, resource }: { courseId: string; resource: IResource },
       { user }: IContextState,
     ) {
-      const course = <any>await Course.findById(courseId);
+      const course = await Course.findById(courseId);
       if (!course) {
         throw new Error('Course not found!');
       }
 
-      resource.user = (<IUser>user)._id;
-      course.resources.push(resource);
-      await course.save();
+      resource.user = (user as IUser)._id;
+      const resources = course.get('resources');
+      resources.push(resource);
+      await course.updateOne({
+        resources,
+      });
 
       return responses.add('Resource');
     },
     async updateResource(
-      _: any,
+      _: object,
       {
         courseId,
         resourceId,
@@ -49,7 +52,7 @@ export default {
       return responses.update('Resource');
     },
     async removeResource(
-      _: any,
+      _: object,
       { courseId, resourceId }: { courseId: string; resourceId: string },
     ) {
       const course = await Course.findById(courseId);

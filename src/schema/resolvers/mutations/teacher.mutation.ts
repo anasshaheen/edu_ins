@@ -5,8 +5,8 @@ import { IUser } from '../../../interfaces';
 
 export default {
   Mutation: {
-    addTeacher: async (_: any, { input }: { input: IUser }) => {
-      let user = await User.findOne({
+    addTeacher: async (_: object, { input }: { input: IUser }) => {
+      const user = await User.findOne({
         $or: [{ phone: input.phone }, { email: input.email }],
       });
       if (user) {

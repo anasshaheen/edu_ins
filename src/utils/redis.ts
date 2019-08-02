@@ -7,11 +7,11 @@ class RedisClient {
 
   constructor() {
     this.client = redis.createClient(redisConfig.port, redisConfig.host);
-    this.client.on('connect', function() {
+    this.client.on('connect', () => {
       console.log('Redis client connected');
     });
 
-    this.client.on('error', function(err) {
+    this.client.on('error', err => {
       console.log('Something went wrong ' + err);
     });
   }
@@ -28,12 +28,12 @@ class RedisClient {
     });
   }
 
-  set(key: string, value: any): void {
-    this.client.set(key, value);
+  set(key: string, value: object): void {
+    this.client.set(key, JSON.stringify(value));
   }
 
-  setWithExpirationTime(key: string, seconds: number, value: any): void {
-    this.client.setex(key, seconds, value);
+  setWithExpirationTime(key: string, seconds: number, value: object): void {
+    this.client.setex(key, seconds, JSON.stringify(value));
   }
 
   delete(key: string): boolean {
@@ -46,7 +46,7 @@ class RedisClient {
         if (err) {
           reject(err);
         } else {
-          resolve(res);
+          resolve(JSON.parse(res));
         }
       });
     });

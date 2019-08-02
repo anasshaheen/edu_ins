@@ -6,10 +6,10 @@ import { IAdmin } from '../../../interfaces';
 export default {
   Mutation: {
     addAdmin: async (
-      _: any,
+      _: object,
       { input: { phone, email, name, password } }: { input: IAdmin },
     ) => {
-      let user = await User.findOne({
+      const user = await User.findOne({
         $or: [{ phone }, { email }],
       });
       if (user) {

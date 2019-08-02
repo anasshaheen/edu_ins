@@ -7,7 +7,7 @@ import { pubSub } from '../../../services';
 export default {
   Mutation: {
     async sendMessageToCourse(
-      _: any,
+      _: object,
       {
         courseId,
         input: { body },
@@ -21,7 +21,7 @@ export default {
 
       const courseStudent = await CourseStudent.findOne({
         course: courseId,
-        student: (<IUser>user)._id,
+        student: (user as IUser)._id,
       });
       if (!courseStudent) {
         throw new Error('User is not authorzied to access this resource!');
@@ -29,7 +29,7 @@ export default {
 
       let message = await Message.create({
         course: courseId,
-        user: (<IUser>user)._id,
+        user: (user as IUser)._id,
         body,
         createdAt: new Date(),
       });

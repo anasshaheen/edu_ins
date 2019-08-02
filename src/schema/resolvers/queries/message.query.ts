@@ -4,7 +4,7 @@ import { IPaging, IContextState, IUser } from '../../../interfaces';
 export default {
   Query: {
     courseMessages: async (
-      _: any,
+      _: object,
       {
         courseId,
         paging: { page = 1, limit = 10 },
@@ -18,7 +18,7 @@ export default {
 
       const courseStudent = await CourseStudent.findOne({
         course: courseId,
-        user: (<IUser>user)._id,
+        user: (user as IUser)._id,
       });
       if (!courseStudent) {
         throw new Error('User is not authorzied to access this resource!');

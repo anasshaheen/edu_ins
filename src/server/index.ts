@@ -10,45 +10,47 @@ import graphQLSchema from '../schema';
 import { server as serverConfig } from '../config';
 
 class AppServer {
-  private _server: ApolloServer;
-  private _app: Express;
-  private _port: number;
+  private server: ApolloServer;
+  private app: Express;
+  private port: number;
 
-  constructor(port: number | undefined = undefined) {
-    this._server = apollo();
-    this._app = express();
-    this._port = port || (serverConfig.port || 4000);
-    this._server.applyMiddleware({ app: this._app, path: '/graphql' });
+  constructor() {
+    this.server = apollo();
+    this.app = express();
+    this.port = serverConfig.port || 4000;
+    this.server.applyMiddleware({ app: this.app, path: '/graphql' });
   }
 
   get apolloServer(): ApolloServer {
-    return this._server;
+    return this.server;
   }
 
   get express() {
-    return this._app;
+    return this.app;
   }
 
   start(): Server {
-    const httpServer = createServer(this._app);
-    this._server.installSubscriptionHandlers(httpServer);
+    const httpServer = createServer(this.app);
+    this.server.installSubscriptionHandlers(httpServer);
 
-    return httpServer.listen({ port: this._port }, () => {
-      new SubscriptionServer(
-        {
-          execute,
-          subscribe,
-          schema: makeExecutableSchema({
-            typeDefs: graphQLSchema.typeDefs,
-            resolvers: graphQLSchema.resolvers,
-          }),
-        },
-        {
-          server: <any>this._app,
-          path: '/subscriptions',
-        },
-      );
-    });
+    return httpServer.listen(
+      { port: this.port },
+      () =>
+        new SubscriptionServer(
+          {
+            execute,
+            subscribe,
+            schema: makeExecutableSchema({
+              typeDefs: graphQLSchema.typeDefs,
+              resolvers: graphQLSchema.resolvers,
+            }),
+          },
+          {
+            server: this.app as any,
+            path: '/subscriptions',
+          },
+        ),
+    );
   }
 }
 

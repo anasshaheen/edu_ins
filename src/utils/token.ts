@@ -6,7 +6,7 @@ import { IAuthState } from '../interfaces';
 
 class TokenUtils {
   static generate(payload: object): string {
-    return sign(payload, <Secret>jwtConfig.privateKey, jwtConfig.options);
+    return sign(payload, jwtConfig.privateKey as Secret, jwtConfig.options);
   }
 
   static decode(token: string): any {
