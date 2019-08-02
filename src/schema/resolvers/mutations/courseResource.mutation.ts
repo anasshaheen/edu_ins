@@ -1,20 +1,20 @@
 import { Course } from '../../../db';
 import { responses } from '../../../utils';
-import { IResource, IUser } from '../../../interfaces';
+import { IResource, IUser, IContextState } from '../../../interfaces';
 
 export default {
   Mutation: {
     async addResource(
       _: any,
       { courseId, resource }: { courseId: string; resource: IResource },
-      { user: { _id } }: { user: IUser },
+      { user }: IContextState,
     ) {
       const course = <any>await Course.findById(courseId);
       if (!course) {
         throw new Error('Course not found!');
       }
 
-      resource.user = _id;
+      resource.user = (<IUser>user)._id;
       course.resources.push(resource);
       await course.save();
 

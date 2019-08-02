@@ -1,15 +1,15 @@
 import { GeneralResource } from '../../../db';
 import { responses } from '../../../utils';
-import { IGeneralResource, IUser } from '../../../interfaces';
+import { IGeneralResource, IUser, IContextState } from '../../../interfaces';
 
 export default {
   Mutation: {
     async addGeneralResource(
       _: any,
       { input }: { input: IGeneralResource },
-      { user: { _id } }: { user: IUser },
+      { user }: IContextState,
     ) {
-      input.user = _id;
+      input.user = (<IUser>user)._id;
       input.createdAt = new Date();
       const resource = new GeneralResource(input);
       await resource.save();

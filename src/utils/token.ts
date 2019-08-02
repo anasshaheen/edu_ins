@@ -5,7 +5,7 @@ import { jsonWebToken as jwtConfig } from '../config';
 import { IAuthState } from '../interfaces';
 
 class TokenUtils {
-  static generate(payload: any): string {
+  static generate(payload: object): string {
     return sign(payload, <Secret>jwtConfig.privateKey, jwtConfig.options);
   }
 

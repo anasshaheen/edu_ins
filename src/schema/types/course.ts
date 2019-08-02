@@ -7,7 +7,6 @@ export default gql`
     description: String
     syllable: Syllable
     teachers: [User]
-    exams: [Exam]
     resources: [Resource]
     createdAt: String
     updatedAt: String

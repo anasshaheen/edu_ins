@@ -4,6 +4,7 @@ import uploadFile from './uploadFile';
 import getUser from './getUser';
 import HostingEnvironment from './hostingEnvironment';
 import TokenUtils from './token';
+import RedisClient from './redis';
 
 export {
   responses,
@@ -12,4 +13,5 @@ export {
   HostingEnvironment,
   TokenUtils,
   HashUtils,
+  RedisClient,
 };
