@@ -1,13 +1,13 @@
 import { Course, Exam } from '../../../db';
 import { responses } from '../../../utils';
-import { IUser, IExam } from '../../../interfaces';
+import { IUser, IExam, IContextState } from '../../../interfaces';
 
 export default {
   Mutation: {
     async addExam(
       _: any,
       { courseId, input }: { courseId: string; input: IExam },
-      { user: { _id } }: { user: IUser },
+      { user }: IContextState,
     ) {
       const course = <any>await Course.findById(courseId);
       if (!course) {
@@ -16,7 +16,7 @@ export default {
 
       input.course = courseId;
       input.createdAt = new Date();
-      input.author = _id;
+      input.author = (<IUser>user)._id;
       const exam = new Exam(input);
       await exam.save();
 

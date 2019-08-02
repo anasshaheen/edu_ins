@@ -7,6 +7,7 @@ import { Express } from 'express';
 import apollo from './apollo';
 import express from './express';
 import graphQLSchema from '../schema';
+import { server as serverConfig } from '../config';
 
 class AppServer {
   private _server: ApolloServer;
@@ -16,7 +17,7 @@ class AppServer {
   constructor(port: number | undefined = undefined) {
     this._server = apollo();
     this._app = express();
-    this._port = port || (<number | undefined>process.env.PORT || 4000);
+    this._port = port || (serverConfig.port || 4000);
     this._server.applyMiddleware({ app: this._app, path: '/graphql' });
   }
 

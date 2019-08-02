@@ -1,8 +1,37 @@
 import { ApolloServer } from 'apollo-server-express';
+import { IContextState } from 'src/interfaces';
 
-import schema from '../schema';
-import { TokenUtils } from '../utils';
 import { server as serverConfig } from '../config';
+import schema from '../schema';
+import { RedisClient, TokenUtils } from '../utils';
+
+const redisClient = new RedisClient();
+
+async function handleContext({ req, connection }: any): Promise<IContextState> {
+  if (connection) {
+    return connection.context;
+  } else {
+    const result: IContextState = {
+      user: undefined,
+      isLoggedIn: false,
+      redisClient,
+    };
+
+    let token = req.headers.authorization || '';
+    if (!token) {
+      return result;
+    }
+
+    token = token.substring(7).trim();
+
+    const validationRes = await TokenUtils.validateToken(token);
+
+    result.isLoggedIn = validationRes.isLoggedIn;
+    result.user = validationRes.user;
+
+    return result;
+  }
+}
 
 export default () => {
   const server = new ApolloServer({
@@ -27,20 +56,7 @@ export default () => {
         console.log('Dicconnected from socket!!!');
       },
     },
-    context: async ({ req, connection }: any) => {
-      if (connection) {
-        return connection.context;
-      } else {
-        let token = req.headers.authorization || '';
-        if (!token) {
-          return { user: undefined, isLoggedIn: false };
-        }
-
-        token = token.substring(7).trim();
-
-        return await TokenUtils.validateToken(token);
-      }
-    },
+    context: handleContext,
   });
 
   return server;

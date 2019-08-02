@@ -1,7 +1,7 @@
 import { Course, CourseStudent, Message } from '../../../db';
 import { subscriptionEvents } from '../../../constants';
 import { responses } from '../../../utils';
-import { IUser } from '../../../interfaces';
+import { IUser, IContextState } from '../../../interfaces';
 import { pubSub } from '../../../services';
 
 export default {
@@ -12,7 +12,7 @@ export default {
         courseId,
         input: { body },
       }: { courseId: string; input: { body: string } },
-      { user: { _id } }: { user: IUser },
+      { user }: IContextState,
     ) {
       const course = await Course.findById(courseId);
       if (!course) {
@@ -21,7 +21,7 @@ export default {
 
       const courseStudent = await CourseStudent.findOne({
         course: courseId,
-        student: _id,
+        student: (<IUser>user)._id,
       });
       if (!courseStudent) {
         throw new Error('User is not authorzied to access this resource!');
@@ -29,7 +29,7 @@ export default {
 
       let message = await Message.create({
         course: courseId,
-        user: _id,
+        user: (<IUser>user)._id,
         body,
         createdAt: new Date(),
       });

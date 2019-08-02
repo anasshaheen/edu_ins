@@ -1,6 +1,6 @@
 import { User } from '../../../db';
 import { responses, HashUtils, uploadFile } from '../../../utils';
-import { IUser } from '../../../interfaces';
+import { IUser, IContextState } from '../../../interfaces';
 import { roles } from '../../../constants';
 
 export default {
@@ -8,28 +8,30 @@ export default {
     async updateUser(
       _: any,
       { input }: { input: IUser },
-      { user: { _id } }: { user: IUser },
+      { user }: IContextState,
     ) {
       input.updatedAt = new Date();
-      await User.updateOne({ _id }, input);
+      await User.updateOne({ _id: (<IUser>user)._id }, input);
 
       return responses.update('User');
     },
     async changePassword(
       _: any,
       { input }: { input: { oldPassword: string; newPassword: string } },
-      { user: { _id } }: { user: IUser },
+      { user }: IContextState,
     ) {
-      const user = <any>await User.findById(_id);
-      if (!user) {
+      const userToUpdate = <any>await User.findById((<IUser>user)._id);
+      if (!userToUpdate) {
         throw new Error('User not found!');
       }
 
-      if (!(await HashUtils.comparePass(input.oldPassword, user.password))) {
+      if (
+        !(await HashUtils.comparePass(input.oldPassword, userToUpdate.password))
+      ) {
         throw new Error('Password does not match.');
       }
 
-      await user
+      await userToUpdate
         .updateOne({
           password: await HashUtils.hashPass(input.newPassword),
           updatedAt: new Date(),
@@ -41,14 +43,14 @@ export default {
     async uploadAvatar(
       _: any,
       { file }: { file: any },
-      { user: { _id } }: { user: IUser },
+      { user }: IContextState,
     ) {
       const { createReadStream, mimetype } = await file;
       const stream = createReadStream();
 
-      const data = await uploadFile(`${_id}${mimetype}`, stream);
+      const data = await uploadFile(`${(<IUser>user)._id}${mimetype}`, stream);
       await User.updateOne(
-        { _id },
+        { _id: (<IUser>user)._id },
         {
           avatar: data.Location,
           updatedAt: new Date(),
@@ -60,22 +62,23 @@ export default {
     removeUser: async (
       _: any,
       { id }: { id: string },
-      { user: { _id, role } }: { user: IUser },
+      { user }: IContextState,
     ) => {
-      const user = <any>await User.findById(id);
-      if (!user) {
+      const userToUpdate = <any>await User.findById(id);
+      if (!userToUpdate) {
         throw new Error('User not found!');
       }
 
       if (
-        user._id === _id ||
-        role === roles.SUPER_ADMIN ||
-        (role === roles.ADMIN &&
-          (user.role === roles.STUDENT || user.role === roles.TEACHER))
+        userToUpdate._id === (<IUser>user)._id ||
+        (<IUser>user).role === roles.SUPER_ADMIN ||
+        ((<IUser>user).role === roles.ADMIN &&
+          (userToUpdate.role === roles.STUDENT ||
+            userToUpdate.role === roles.TEACHER))
       ) {
-        await user.remove();
+        await userToUpdate.remove();
       } else {
-        if (user.role === roles.ADMIN) {
+        if (userToUpdate.role === roles.ADMIN) {
           throw new Error('Admins can be removed only by SUPER ADMIN.');
         }
 

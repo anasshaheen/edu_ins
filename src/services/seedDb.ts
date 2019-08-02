@@ -3,7 +3,7 @@ import { roles } from '../constants';
 
 export default async () => {
   const count = await User.countDocuments({
-    role: roles.ADMIN,
+    role: roles.SUPER_ADMIN,
   });
   if (count) {
     return;
