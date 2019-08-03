@@ -2,7 +2,9 @@
 
 ---
 
-This application is meant to manage the entities of a small education instutions from teachers to courses and students.
+The application uses GraphQL API with Apollo Server, MongoDB, Redis for the caching and AWS S3 for storage.
+
+This application manages the entities of a small education instutions from teachers to courses, students and students marks.
 
 ## Usage
 
