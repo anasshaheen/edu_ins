@@ -4,17 +4,19 @@ services:
   server:
     container_name: server
     build:
-      context: .
-      dockerfile: Dockerfile
-    restart: 'always'
+      context: ../
+      dockerfile: ./docker/Dockerfile.test
     volumes:
       - /app/node_modules
+      - ../:/app
     links:
       - db
+    ports:
+      - '4000:4000'
     environment:
-      - NODE_ENV=production
-      - PORT=${PORT}
-      - DATABASE_URI=${DATABASE_URI}
+      - NODE_ENV=testing
+      - PORT=4000
+      - TEST_DATABASE_URI=${TEST_DATABASE_URI}
       - ISSUER=${ISSUER}
       - SUBJECT=${SUBJECT}
       - AUDIENCE=${AUDIENCE}
@@ -24,14 +26,3 @@ services:
       - AWS_SECRET_KEY=${AWS_SECRET_KEY}
       - AWS_BUCKET_REGION=${AWS_BUCKET_REGION}
       - AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
-
-  nginx:
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
-    ports:
-      - '80:80'
-    links:
-      - db
-      - server

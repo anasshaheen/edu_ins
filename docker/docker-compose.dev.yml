@@ -4,15 +4,15 @@ services:
   server:
     container_name: server
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ../
+      dockerfile: ./docker/Dockerfile.dev
     restart: 'always'
     volumes:
       - /app/node_modules
-      - .:/app
+      - ../:/app
     links:
       - db
     env_file:
-      - .env
+      - ../.env
     ports:
       - '4000:4000'
