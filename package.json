@@ -34,7 +34,7 @@
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
     "redis": "^2.8.0",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.4.0",
     "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
